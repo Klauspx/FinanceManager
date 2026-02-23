@@ -37,31 +37,50 @@ public class UsuarioDAO {
     }
     }
 
+    public void deletar (int id) {
+        String sql = "DELETE FROM usuarios WHERE id = ?";
+
+        try {
+            PreparedStatement pstm = conexao.prepareStatement(sql);
+
+            pstm.setInt(1, id);
+
+            pstm.executeUpdate();
+
+            pstm.close();
+
+            System.out.println("Usuário deletado com sucesso!");
+
+        }catch (Exception erro){
+            throw new RuntimeException("Erro ao deletar usuário.", erro);
+        }
+    }
+
     public List<Usuario> listarTodos() {
         List<Usuario> lista = new ArrayList<>();
 
         String sql = "SELECT * FROM usuarios";
 
-        try {
-            PreparedStatement pstm = conexao.prepareStatement(sql);
+            try {
+                PreparedStatement pstm = conexao.prepareStatement(sql);
 
-            ResultSet rs = pstm.executeQuery();
+                ResultSet rs = pstm.executeQuery();
 
-            while (rs.next()){
-                int id = rs.getInt("id");
-                String nome = rs.getString("nome");
-                String email = rs.getString("email");
-                String senha = rs.getString("senha");
+                while (rs.next()){
+                    int id = rs.getInt("id");
+                    String nome = rs.getString("nome");
+                    String email = rs.getString("email");
+                    String senha = rs.getString("senha");
 
-                Usuario usuario = new Usuario(id, nome, email, senha);
-                lista.add(usuario);
-            }
+                    Usuario usuario = new Usuario(id, nome, email, senha);
+                    lista.add(usuario);
+                }
 
-            rs.close();
-            pstm.close();
+                rs.close();
+                pstm.close();
 
-        }catch (Exception erro){
-            throw new RuntimeException("Erro ao listar usuários!", erro);
+            }catch (Exception erro){
+                throw new RuntimeException("Erro ao listar usuários!", erro);
         }
 
         return lista;
