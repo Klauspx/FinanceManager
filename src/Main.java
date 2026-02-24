@@ -29,6 +29,7 @@ public static void main(String[] args) throws SQLException {
 //        System.out.println(usuario.getEmail());
 
 //    usuarioDAO.deletar(1);
+
 //ATUALIZAR USUARIOS
 //    Usuario usuarioEditado = new Usuario(2, "Nadson Klaus", "klausplima@gmail.com", "klaus321");
 //
@@ -41,19 +42,31 @@ public static void main(String[] args) throws SQLException {
 //        System.out.println("ID: " + usuario.getIdUsuario() + " | Nome: " + usuario.getNome());
 //    }
 
-    Usuario donoDoLancamento = new Usuario(2, "Nadson Klaus", "klausplima@gmail.com", "klaus321");
+//NOVO LACAMENTO
+//    Usuario donoDoLancamento = new Usuario(2, "Nadson Klaus", "klausplima@gmail.com", "klaus321");
+//    Lancamento novaDespesa = new Lancamento(
+//            "Compra de um teclado mecânico",
+//            new java.math.BigDecimal("250"),
+//            java.time.LocalDate.now(),
+//            TipoTransacao.DESPESA,
+//            "Eletrônicos",
+//            donoDoLancamento
+//    );
+//
+//    lancamentoDAO.salvar(novaDespesa);
+//    System.out.println("Lançamento efetuado com sucesso!");
 
-    Lancamento novaDespesa = new Lancamento(
-            "Compra de um teclado mecânico",
-            new java.math.BigDecimal("250"),
-            java.time.LocalDate.now(),
-            TipoTransacao.DESPESA,
-            "Eletrônicos",
-            donoDoLancamento
-    );
+//
+    List<Lancamento> meusLancamentos = lancamentoDAO.listarTodos();
 
-    lancamentoDAO.salvar(novaDespesa);
-    System.out.println("Lançamento efetuado com sucesso!");
-
+// 3. A Exibição no Console
+    System.out.println("--- Minhas Movimentações Financeiras ---");
+    for (Lancamento lancamento : meusLancamentos) {
+        System.out.println("Descrição: " + lancamento.getDescricao() +
+                " | Valor: R$ " + lancamento.getValor() +
+                " | Data: " + lancamento.getData() +
+                " | Categoria: " + lancamento.getCategoria() +
+                " | ID do Dono: " + lancamento.getUsuario().getIdUsuario());
+    }
     conexao.close();
 }

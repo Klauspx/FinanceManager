@@ -1,9 +1,16 @@
 package dao;
 
 import modelo.Lancamento;
+import modelo.TipoTransacao;
+import modelo.Usuario;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LancamentoDAO {
     private Connection conexao;
@@ -33,5 +40,38 @@ public class LancamentoDAO {
         }catch (Exception erro){
             throw new RuntimeException("Erro ao salvar lançamento!");
         }
+    }
+
+    public List<Lancamento> listarTodos(){
+        List<Lancamento> lista = new ArrayList<>();
+
+        String sql = "SELECT * FROM lancamentos";
+
+        try{
+            PreparedStatement pstm = conexao.prepareStatement(sql);
+
+            ResultSet rs = pstm.executeQuery();
+
+            while (rs.next()){
+                String descricao = rs.getString("descricao");
+                BigDecimal valor = rs.getBigDecimal("valor");
+                LocalDate data = rs.getDate("data").toLocalDate();
+                TipoTransacao tipo = TipoTransacao.valueOf(rs.getString("tipo"));
+                String categoria = rs.getString("categoria");
+                int idUsuario = rs.getInt("usuario_id");
+                Usuario dono = new Usuario(idUsuario, null, null, null);
+
+                Lancamento lancamento = new Lancamento(descricao, valor, data, tipo,categoria, dono);
+                lista.add(lancamento);
+            }
+
+            rs.close();
+            pstm.close();
+
+            }catch (Exception erro) {
+                throw new RuntimeException("Erro ao listar lancamento!", erro);
+        }
+
+        return lista;
     }
 }
