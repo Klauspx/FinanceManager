@@ -56,6 +56,26 @@ public class UsuarioDAO {
         }
     }
 
+    public void atualizar (Usuario usuario) {
+        String sql = "UPDATE usuarios SET nome = ?, email = ?, senha = ? WHERE id = ?";
+
+        try{
+            PreparedStatement pstm = conexao.prepareStatement(sql);
+
+            pstm.setString(1, usuario.getNome());
+            pstm.setString(2, usuario.getEmail());
+            pstm.setString(3, usuario.getSenha());
+            pstm.setInt(4, usuario.getIdUsuario());
+
+            pstm.executeUpdate();
+            pstm.close();
+
+            System.out.println("Atualizado com sucesso!");
+        }catch (Exception erro){
+            throw new RuntimeException("Erro ao atualizar!");
+        }
+    }
+
     public List<Usuario> listarTodos() {
         List<Usuario> lista = new ArrayList<>();
 

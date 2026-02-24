@@ -16,15 +16,19 @@ public static void main(String[] args) throws SQLException {
 //    Usuario novousuario = new Usuario(null, "Klaus", "klaus@gmail.com", "klaus123");
 //
 //    usuarioDAO.salvar(novousuario);
-//
-//    conexao.close();
+
+
 //LISTAR USUARIOS
 //    List<Usuario> meusUsuarios = usuarioDAO.listarTodos();
 //
 //    for (Usuario usuario : meusUsuarios) {
 //        System.out.println(usuario.getEmail());
 
-    usuarioDAO.deletar(1);
+//    usuarioDAO.deletar(1);
+//ATUALIZAR USUARIOS
+    Usuario usuarioEditado = new Usuario(2, "Nadson Klaus", "klausplima@gmail.com", "klaus321");
+
+    usuarioDAO.atualizar(usuarioEditado);
 
     List<Usuario> meusUsuarios = usuarioDAO.listarTodos();
 
