@@ -1,5 +1,8 @@
+import dao.LancamentoDAO;
 import dao.UsuarioDAO;
 import factory.ConnectionFactory;
+import modelo.Lancamento;
+import modelo.TipoTransacao;
 import modelo.Usuario;
 
 import java.sql.Connection;
@@ -12,6 +15,7 @@ public static void main(String[] args) throws SQLException {
     ConnectionFactory factory = new  ConnectionFactory();
     Connection conexao = factory.recuperarConexao();
     UsuarioDAO usuarioDAO = new UsuarioDAO(conexao);
+    LancamentoDAO lancamentoDAO = new LancamentoDAO(conexao);
 //SALVAR USUARIOS
 //    Usuario novousuario = new Usuario(null, "Klaus", "klaus@gmail.com", "klaus123");
 //
@@ -26,16 +30,30 @@ public static void main(String[] args) throws SQLException {
 
 //    usuarioDAO.deletar(1);
 //ATUALIZAR USUARIOS
-    Usuario usuarioEditado = new Usuario(2, "Nadson Klaus", "klausplima@gmail.com", "klaus321");
+//    Usuario usuarioEditado = new Usuario(2, "Nadson Klaus", "klausplima@gmail.com", "klaus321");
+//
+//    usuarioDAO.atualizar(usuarioEditado);
+//
+//    List<Usuario> meusUsuarios = usuarioDAO.listarTodos();
+//
+//    System.out.println("--- Lista de Usuários Atualizada ---");
+//    for (Usuario usuario : meusUsuarios) {
+//        System.out.println("ID: " + usuario.getIdUsuario() + " | Nome: " + usuario.getNome());
+//    }
 
-    usuarioDAO.atualizar(usuarioEditado);
+    Usuario donoDoLancamento = new Usuario(2, "Nadson Klaus", "klausplima@gmail.com", "klaus321");
 
-    List<Usuario> meusUsuarios = usuarioDAO.listarTodos();
+    Lancamento novaDespesa = new Lancamento(
+            "Compra de um teclado mecânico",
+            new java.math.BigDecimal("250"),
+            java.time.LocalDate.now(),
+            TipoTransacao.DESPESA,
+            "Eletrônicos",
+            donoDoLancamento
+    );
 
-    System.out.println("--- Lista de Usuários Atualizada ---");
-    for (Usuario usuario : meusUsuarios) {
-        System.out.println("ID: " + usuario.getIdUsuario() + " | Nome: " + usuario.getNome());
-    }
+    lancamentoDAO.salvar(novaDespesa);
+    System.out.println("Lançamento efetuado com sucesso!");
 
     conexao.close();
 }
