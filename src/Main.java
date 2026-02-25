@@ -69,16 +69,42 @@ public static void main(String[] args) throws SQLException {
 //    }
 
 //DELETAR LANCAMENTO
-    int idParaApagar = 1;
-    lancamentoDAO.deletar(idParaApagar);
+//    int idParaApagar = 1;
+//    lancamentoDAO.deletar(idParaApagar);
+//
+//    List<Lancamento> meusLancamentos = lancamentoDAO.listarTodos();
+//
+//    System.out.println("--- Lista de Lançamentos Atualizada ---");
+//    for (Lancamento lancamento : meusLancamentos) {
+//        System.out.println("ID: " + lancamento.getIdLancamento() +
+//                " | Descrição: " + lancamento.getDescricao() +
+//                " | Valor: R$ " + lancamento.getValor());
+//    }
 
-    List<Lancamento> meusLancamentos = lancamentoDAO.listarTodos();
+//ATUALIZAR LANCAMENTO
+    Usuario dono = new Usuario(2, "Nadson Klaus", "klausplima@gmail.com", "klaus321");
 
-    System.out.println("--- Lista de Lançamentos Atualizada ---");
-    for (Lancamento lancamento : meusLancamentos) {
-        System.out.println("ID: " + lancamento.getIdLancamento() +
-                " | Descrição: " + lancamento.getDescricao() +
-                " | Valor: R$ " + lancamento.getValor());
+    Lancamento lancamentoEditado = new Lancamento(
+            "Teclado Mecânico RGB (Atualizado!)",
+            new java.math.BigDecimal("350.00"),
+            java.time.LocalDate.now(),
+            TipoTransacao.DESPESA,
+            "Setup Gamer",
+            dono
+    );
+
+    lancamentoEditado.setIdLancamento(2);
+
+    lancamentoDAO.atualizar(lancamentoEditado);
+
+    List<Lancamento> meuslancamentos = lancamentoDAO.listarTodos();
+
+    System.out.println("--- Lista de Lançamentos Após a Atualização ---");
+    for (Lancamento l : meuslancamentos) {
+        System.out.println("ID: " + l.getIdLancamento() +
+                " | Descrição: " + l.getDescricao() +
+                " | Valor: R$ " + l.getValor() +
+                " | Categoria: " + l.getCategoria());
     }
     conexao.close();
 }
