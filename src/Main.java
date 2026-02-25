@@ -56,17 +56,29 @@ public static void main(String[] args) throws SQLException {
 //    lancamentoDAO.salvar(novaDespesa);
 //    System.out.println("Lançamento efetuado com sucesso!");
 
+//LISTAR LANCAMENTOS
+//    List<Lancamento> meusLancamentos = lancamentoDAO.listarTodos();
 //
+//    System.out.println("--- Minhas Movimentações Financeiras ---");
+//    for (Lancamento lancamento : meusLancamentos) {
+//        System.out.println("Descrição: " + lancamento.getDescricao() +
+//                " | Valor: R$ " + lancamento.getValor() +
+//                " | Data: " + lancamento.getData() +
+//                " | Categoria: " + lancamento.getCategoria() +
+//                " | ID do Dono: " + lancamento.getUsuario().getIdUsuario());
+//    }
+
+//DELETAR LANCAMENTO
+    int idParaApagar = 1;
+    lancamentoDAO.deletar(idParaApagar);
+
     List<Lancamento> meusLancamentos = lancamentoDAO.listarTodos();
 
-// 3. A Exibição no Console
-    System.out.println("--- Minhas Movimentações Financeiras ---");
+    System.out.println("--- Lista de Lançamentos Atualizada ---");
     for (Lancamento lancamento : meusLancamentos) {
-        System.out.println("Descrição: " + lancamento.getDescricao() +
-                " | Valor: R$ " + lancamento.getValor() +
-                " | Data: " + lancamento.getData() +
-                " | Categoria: " + lancamento.getCategoria() +
-                " | ID do Dono: " + lancamento.getUsuario().getIdUsuario());
+        System.out.println("ID: " + lancamento.getIdLancamento() +
+                " | Descrição: " + lancamento.getDescricao() +
+                " | Valor: R$ " + lancamento.getValor());
     }
     conexao.close();
 }

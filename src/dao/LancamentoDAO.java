@@ -42,6 +42,25 @@ public class LancamentoDAO {
         }
     }
 
+    public void deletar(int id){
+        String sql = "DELETE FROM lancamentos  WHERE id = ?";
+
+        try {
+            PreparedStatement pstm = conexao.prepareStatement(sql);
+
+            pstm.setInt(1, id);
+
+            pstm.executeUpdate();
+
+            pstm.close();
+
+            System.out.println("Lancamento deletado com sucesso!");
+
+        }catch (Exception erro){
+            throw new RuntimeException("Erro ao delar lancamento.!", erro);
+        }
+    }
+
     public List<Lancamento> listarTodos(){
         List<Lancamento> lista = new ArrayList<>();
 
