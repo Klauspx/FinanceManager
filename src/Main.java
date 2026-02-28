@@ -1,110 +1,92 @@
 import dao.LancamentoDAO;
-import dao.UsuarioDAO;
 import factory.ConnectionFactory;
 import modelo.Lancamento;
 import modelo.TipoTransacao;
 import modelo.Usuario;
 
 import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.Scanner;
 
-public static void main(String[] args) throws SQLException {
+public static void main(String[] args) throws Exception {
+    Scanner teclado = new Scanner(System.in);
+
     ConnectionFactory factory = new  ConnectionFactory();
     Connection conexao = factory.recuperarConexao();
-    UsuarioDAO usuarioDAO = new UsuarioDAO(conexao);
     LancamentoDAO lancamentoDAO = new LancamentoDAO(conexao);
-//SALVAR USUARIOS
-//    Usuario novousuario = new Usuario(null, "Klaus", "klaus@gmail.com", "klaus123");
-//
-//    usuarioDAO.salvar(novousuario);
 
+    int opcao = 0;
 
-//LISTAR USUARIOS
-//    List<Usuario> meusUsuarios = usuarioDAO.listarTodos();
-//
-//    for (Usuario usuario : meusUsuarios) {
-//        System.out.println(usuario.getEmail());
+    while(opcao != 9){
+        System.out.println("\n=== MEU GERENCIADOR FINANCEIRO ===");
+        System.out.println("1. Ver Extrato (Listar Lançamentos)");
+        System.out.println("2. Cadastrar Novo Lançamento");
+        System.out.println("3. Deletar Lançamento");
+        System.out.println("9. Sair do Sistema");
+        System.out.print("Escolha uma opção: ");
 
-//    usuarioDAO.deletar(1);
+        opcao = teclado.nextInt();
+        teclado.nextLine();
 
-//ATUALIZAR USUARIOS
-//    Usuario usuarioEditado = new Usuario(2, "Nadson Klaus", "klausplima@gmail.com", "klaus321");
-//
-//    usuarioDAO.atualizar(usuarioEditado);
-//
-//    List<Usuario> meusUsuarios = usuarioDAO.listarTodos();
-//
-//    System.out.println("--- Lista de Usuários Atualizada ---");
-//    for (Usuario usuario : meusUsuarios) {
-//        System.out.println("ID: " + usuario.getIdUsuario() + " | Nome: " + usuario.getNome());
-//    }
+        switch(opcao){
+            case 1:
+                System.out.println("\n--- Seu Extrato ---");
+                List<Lancamento> meuslancamentos = lancamentoDAO.listarTodos();
+                if (meuslancamentos.isEmpty()){
+                    System.out.println("Você ainda não tem nenhuma movimentação cadastrada.");
+                }else {
+                    for (Lancamento lancamento : meuslancamentos){
+                        System.out.println("ID: " + lancamento.getIdLancamento() +
+                                " | Descrição: " + lancamento.getDescricao() +
+                                " | Valor: R$ " + lancamento.getValor() +
+                                " | Data: " + lancamento.getData() +
+                                " | Tipo: " + lancamento.getTipo());
+                    }
+                }
+                break;
 
-//NOVO LACAMENTO
-//    Usuario donoDoLancamento = new Usuario(2, "Nadson Klaus", "klausplima@gmail.com", "klaus321");
-//    Lancamento novaDespesa = new Lancamento(
-//            "Compra de um teclado mecânico",
-//            new java.math.BigDecimal("250"),
-//            java.time.LocalDate.now(),
-//            TipoTransacao.DESPESA,
-//            "Eletrônicos",
-//            donoDoLancamento
-//    );
-//
-//    lancamentoDAO.salvar(novaDespesa);
-//    System.out.println("Lançamento efetuado com sucesso!");
+            case 2:
+                System.out.println("\n--- Novo Lançamento ---");
 
-//LISTAR LANCAMENTOS
-//    List<Lancamento> meusLancamentos = lancamentoDAO.listarTodos();
-//
-//    System.out.println("--- Minhas Movimentações Financeiras ---");
-//    for (Lancamento lancamento : meusLancamentos) {
-//        System.out.println("Descrição: " + lancamento.getDescricao() +
-//                " | Valor: R$ " + lancamento.getValor() +
-//                " | Data: " + lancamento.getData() +
-//                " | Categoria: " + lancamento.getCategoria() +
-//                " | ID do Dono: " + lancamento.getUsuario().getIdUsuario());
-//    }
+                System.out.print("Descrição da transação: ");
+                String desc = teclado.nextLine();
 
-//DELETAR LANCAMENTO
-//    int idParaApagar = 1;
-//    lancamentoDAO.deletar(idParaApagar);
-//
-//    List<Lancamento> meusLancamentos = lancamentoDAO.listarTodos();
-//
-//    System.out.println("--- Lista de Lançamentos Atualizada ---");
-//    for (Lancamento lancamento : meusLancamentos) {
-//        System.out.println("ID: " + lancamento.getIdLancamento() +
-//                " | Descrição: " + lancamento.getDescricao() +
-//                " | Valor: R$ " + lancamento.getValor());
-//    }
+                System.out.print("Valor: ");
+                java.math.BigDecimal valor = new java.math.BigDecimal(teclado.nextLine());
 
-//ATUALIZAR LANCAMENTO
-    Usuario dono = new Usuario(2, "Nadson Klaus", "klausplima@gmail.com", "klaus321");
+                System.out.print("Data (Formato 2026-02-26): ");
+                java.time.LocalDate data = java.time.LocalDate.parse(teclado.nextLine());
 
-    Lancamento lancamentoEditado = new Lancamento(
-            "Teclado Mecânico RGB (Atualizado!)",
-            new java.math.BigDecimal("350.00"),
-            java.time.LocalDate.now(),
-            TipoTransacao.DESPESA,
-            "Setup Gamer",
-            dono
-    );
+                System.out.print("Tipo (RECEITA, DESPESA, INVESTIMENTO): ");
+                TipoTransacao tipo = TipoTransacao.valueOf(teclado.nextLine().toUpperCase());
 
-    lancamentoEditado.setIdLancamento(2);
+                System.out.print("Categoria: ");
+                String cat = teclado.nextLine();
 
-    lancamentoDAO.atualizar(lancamentoEditado);
+                System.out.print("ID do Usuário dono do lançamento: ");
+                int idUser = teclado.nextInt();
+                teclado.nextLine();
 
-    List<Lancamento> meuslancamentos = lancamentoDAO.listarTodos();
+                Usuario dono = new Usuario(idUser, null, null, null);
 
-    System.out.println("--- Lista de Lançamentos Após a Atualização ---");
-    for (Lancamento l : meuslancamentos) {
-        System.out.println("ID: " + l.getIdLancamento() +
-                " | Descrição: " + l.getDescricao() +
-                " | Valor: R$ " + l.getValor() +
-                " | Categoria: " + l.getCategoria());
+                Lancamento novoLancamento = new Lancamento(desc, valor, data, tipo, cat, dono);
+
+                lancamentoDAO.salvar(novoLancamento);
+                break;
+
+            case 3:
+                System.out.println("Digite o ID do lançamento que você quer apagar: ");
+                int id = teclado.nextInt();
+                teclado.nextLine();
+                lancamentoDAO.deletar(id);
+                break;
+            case 9:
+                System.out.println("\nSaindo... Até logo!");
+                break;
+            default:
+                System.out.println("\nOpção inválida! Digite 1, 2, 3 ou 9.");
+        }
     }
+    teclado.close();
     conexao.close();
 }

@@ -97,6 +97,7 @@ public class LancamentoDAO {
             ResultSet rs = pstm.executeQuery();
 
             while (rs.next()){
+                int id = rs.getInt("id");
                 String descricao = rs.getString("descricao");
                 BigDecimal valor = rs.getBigDecimal("valor");
                 LocalDate data = rs.getDate("data").toLocalDate();
@@ -106,6 +107,9 @@ public class LancamentoDAO {
                 Usuario dono = new Usuario(idUsuario, null, null, null);
 
                 Lancamento lancamento = new Lancamento(descricao, valor, data, tipo,categoria, dono);
+
+                lancamento.setIdLancamento(id);
+
                 lista.add(lancamento);
             }
 
