@@ -30,4 +30,8 @@ public class LancamentoService {
         }
         return saldo;
     }
+
+    public List<Lancamento> listarLancamentosPorUsuario (int usuarioId) {
+        return lancamentoDAO.buscarPorUsuario(usuarioId);
+    }
 }

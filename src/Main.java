@@ -34,8 +34,12 @@ public static void main(String[] args) throws Exception {
 
         switch(opcao){
             case 1:
-                System.out.println("\n--- Seu Extrato ---");
-                List<Lancamento> meuslancamentos = lancamentoDAO.listarTodos();
+                System.out.println("Digite o ID do usuário: ");
+                int idusuario = teclado.nextInt();
+                teclado.nextLine();
+
+                List<Lancamento> meuslancamentos = lancamentoService.listarLancamentosPorUsuario(idusuario);
+
                 if (meuslancamentos.isEmpty()){
                     System.out.println("Você ainda não tem nenhuma movimentação cadastrada.");
                 }else {
