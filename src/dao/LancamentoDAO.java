@@ -122,4 +122,38 @@ public class LancamentoDAO {
 
         return lista;
     }
+
+    public List<Lancamento> buscarPorUsuario(int usuarioId) {
+        List<Lancamento> lista = new ArrayList<>();
+
+        String sql = "SELECT * FROM lancamentos WHERE usuario_id = ?";
+
+        try (PreparedStatement pstm = conexao.prepareStatement(sql)) {
+
+            pstm.setInt(1, usuarioId);
+
+            ResultSet rs = pstm.executeQuery();
+
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String descricao = rs.getString("descricao");
+                BigDecimal valor = rs.getBigDecimal("valor");
+                LocalDate data = rs.getDate("data").toLocalDate();
+                TipoTransacao tipo = TipoTransacao.valueOf(rs.getString("tipo"));
+                String categoria = rs.getString("categoria");
+
+                Usuario dono = new Usuario(usuarioId, null, null, null);
+
+                Lancamento lancamento = new Lancamento(descricao, valor, data, tipo, categoria, dono);
+                lancamento.setIdLancamento(id);
+
+                lista.add(lancamento);
+            }
+
+        } catch (Exception erro) {
+            throw new RuntimeException("Erro ao buscar lançamentos por usuário", erro);
+        }
+
+        return lista;
+    }
 }
