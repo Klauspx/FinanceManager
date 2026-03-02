@@ -34,4 +34,14 @@ public class LancamentoService {
     public List<Lancamento> listarLancamentosPorUsuario (int usuarioId) {
         return lancamentoDAO.buscarPorUsuario(usuarioId);
     }
+
+    public void salvarLancamento (Lancamento lancamento) {
+        this.lancamentoDAO.salvar(lancamento);
+    }
+
+    public void excluirLancamento (int lancamentoId) {
+        this.lancamentoDAO.deletar(lancamentoId);
+    }
+
+
 }
