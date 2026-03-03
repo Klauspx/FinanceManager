@@ -62,7 +62,7 @@ public class LancamentoDAO {
     }
 
     public void atualizar(Lancamento lancamento){
-        String sql = "UPDATE lancamentos SET descricao = ?, valor = ?, data = ?, tipo = ?, categoria = ?, id = ? WHERE id = ?";
+        String sql = "UPDATE lancamentos SET descricao = ?, valor = ?, data = ?, tipo = ?, categoria = ? WHERE id = ?";
 
         try {
             PreparedStatement pstm = conexao.prepareStatement(sql);
@@ -72,11 +72,9 @@ public class LancamentoDAO {
             pstm.setDate(3, java.sql.Date.valueOf(lancamento.getData()));
             pstm.setString(4, lancamento.getTipo().name());
             pstm.setString(5, lancamento.getCategoria());
-            pstm.setInt(6, lancamento.getUsuario().getIdUsuario());
             pstm.setInt(7,lancamento.getIdLancamento());
 
-            pstm.executeUpdate();
-
+            pstm.executeUpdate();       
             pstm.close();
 
             System.out.println("Lancamento atualizado com sucesso!");

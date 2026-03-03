@@ -20,6 +20,13 @@ public class Lancamento {
         this.categoria = categoria;
         this.usuario = usuario;
     }
+    public Lancamento(String descricao, BigDecimal valor, LocalDate data, TipoTransacao tipo, String categoria) {
+        this.descricao = descricao;
+        this.valor = valor;
+        this.data = data;
+        this.tipo = tipo;
+        this.categoria = categoria;
+    }
 
     public Integer getIdLancamento() {
         return idLancamento;

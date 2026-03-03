@@ -17,6 +17,7 @@ private static void mostrarMenu(){
     System.out.println("2. Cadastrar Novo Lançamento");
     System.out.println("3. Deletar Lançamento");
     System.out.println("4. Ver saldo atual");
+    System.out.println("5. Editar Lançamento");
     System.out.println("9. Sair do Sistema");
     System.out.print("Escolha uma opção: ");
 }
@@ -88,6 +89,43 @@ private static void verSaldo (Scanner teclado, LancamentoService lancamentoServi
     System.out.println("\nSaldo atual: R$ " + saldo);
 }
 
+private static void editarLancamento(Scanner teclado, LancamentoService lancamentoService){
+
+    try {
+        System.out.println("\n--- Editar Lançamento ---");
+
+        System.out.print("ID do lançamento: ");
+        int id = teclado.nextInt();
+        teclado.nextLine();
+
+        System.out.print("Nova descrição: ");
+        String desc = teclado.nextLine();
+
+        System.out.print("Novo valor: ");
+        BigDecimal valor = new BigDecimal(teclado.nextLine());
+
+        System.out.print("Nova data (yyyy-MM-dd): ");
+        LocalDate data = LocalDate.parse(teclado.nextLine());
+
+        System.out.print("Novo tipo (RECEITA, DESPESA, INVESTIMENTO): ");
+        TipoTransacao tipo = TipoTransacao.valueOf(teclado.nextLine().toUpperCase());
+
+        System.out.print("Nova categoria: ");
+        String categoria = teclado.nextLine();
+
+        Lancamento atualizado = new Lancamento(desc, valor, data, tipo, categoria);
+
+        lancamentoService.atualizarLancamento(atualizado);
+
+        System.out.println("\nLançamento atualizado com sucesso!");
+
+    } catch (IllegalArgumentException erro) {
+        System.out.println("\nErro: " + erro.getMessage());
+    } catch (Exception e) {
+        System.out.println("\nErro inesperado. Verifique os dados digitados.");
+    }
+}
+
 public static void main(String[] args) throws Exception {
     Scanner teclado = new Scanner(System.in);
 
@@ -119,6 +157,10 @@ public static void main(String[] args) throws Exception {
 
             case 4:
                 verSaldo(teclado, lancamentoService);
+                break;
+
+            case 5:
+                editarLancamento(teclado, lancamentoService);
                 break;
 
             case 9:
