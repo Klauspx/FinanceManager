@@ -36,6 +36,10 @@ public class LancamentoService {
         return lancamentoDAO.buscarPorUsuario(usuarioId);
     }
 
+    public List<Lancamento> listarLancamentosPorPeriodo(int usuarioId, LocalDate dataInicio, LocalDate dataFim) {
+        return lancamentoDAO.buscarPorPeriodo(usuarioId, dataInicio, dataFim);
+    }
+
     public void salvarLancamento (Lancamento lancamento) {
         this.lancamentoDAO.salvar(lancamento);
     }

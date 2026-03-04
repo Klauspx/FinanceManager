@@ -18,6 +18,7 @@ private static void mostrarMenu(){
     System.out.println("3. Deletar Lançamento");
     System.out.println("4. Ver saldo atual");
     System.out.println("5. Editar Lançamento");
+    System.out.println("6. Buscar lançcamentos por data");
     System.out.println("9. Sair do Sistema");
     System.out.print("Escolha uma opção: ");
 }
@@ -38,6 +39,38 @@ private static void listarLancamentosPorUsuario(Scanner teclado, LancamentoServi
                     " | Valor: R$ " + lancamento.getValor() +
                     " | Data: " + lancamento.getData() +
                     " | Tipo: " + lancamento.getTipo());
+        }
+    }
+}
+
+private static void listarLancamentosPorPeriodo(Scanner teclado, LancamentoService lancamentoService){
+    System.out.print("\nDigite o ID do usuario: ");
+    int idusuario = teclado.nextInt();
+    teclado.nextLine();
+
+    System.out.print("\nDigite a data de início(aaaa-mm-dd): ");
+    LocalDate dataInicio = LocalDate.parse(teclado.nextLine());
+
+    System.out.print("\nDigite a data de fim(aaaa-mm-dd): ");
+    LocalDate dataFim = LocalDate.parse(teclado.nextLine());
+    if (dataFim.isBefore(dataInicio)) {
+        System.out.println("A data final não pode ser anterior à data inicial.");
+        return;
+    }
+
+    List<Lancamento> meuslancamentos = lancamentoService.listarLancamentosPorPeriodo(idusuario, dataInicio, dataFim);
+
+    if (meuslancamentos.isEmpty()){
+        System.out.println("Nenhuma movimentação nesse período ou o usuário informado não existe.");
+    }else  {
+        for (Lancamento lancamento : meuslancamentos){
+            System.out.println("ID: " + lancamento.getIdLancamento() +
+                    " | Descrição: " + lancamento.getDescricao() +
+                    " | Valor: R$ " + lancamento.getValor() +
+                    " | Data: " + lancamento.getData() +
+                    " | Tipo: " + lancamento.getTipo() +
+                    " | Categoria: " + lancamento.getCategoria()
+                );
         }
     }
 }
@@ -163,6 +196,9 @@ public static void main(String[] args) throws Exception {
                 editarLancamento(teclado, lancamentoService);
                 break;
 
+            case 6:
+                listarLancamentosPorPeriodo(teclado, lancamentoService);
+                break;
             case 9:
                 System.out.println("\nSaindo... Até logo!");
                 break;

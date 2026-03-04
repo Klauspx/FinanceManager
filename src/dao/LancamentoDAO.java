@@ -74,7 +74,7 @@ public class LancamentoDAO {
             pstm.setString(5, lancamento.getCategoria());
             pstm.setInt(7,lancamento.getIdLancamento());
 
-            pstm.executeUpdate();       
+            pstm.executeUpdate();
             pstm.close();
 
             System.out.println("Lancamento atualizado com sucesso!");
@@ -153,5 +153,47 @@ public class LancamentoDAO {
         }
 
         return lista;
+    }
+
+    public List<Lancamento> buscarPorPeriodo(int usuarioId, LocalDate dataInicio, LocalDate dataFim) {
+
+        String sql = "SELECT * FROM lancamentos WHERE usuario_id = ? AND data BETWEEN ? AND ?";
+
+        try {
+            PreparedStatement pstm = conexao.prepareStatement(sql);
+
+            pstm.setInt(1, usuarioId);
+            pstm.setDate(2, java.sql.Date.valueOf(dataInicio));
+            pstm.setDate(3, java.sql.Date.valueOf(dataFim));
+
+            ResultSet rs = pstm.executeQuery();
+
+            List<Lancamento> lista = new ArrayList<>();
+
+            while (rs.next()) {
+                Usuario usuario = new Usuario(rs.getInt("usuario_id"), null, null, null);
+
+                Lancamento lancamento = new Lancamento(
+                        rs.getString("descricao"),
+                        rs.getBigDecimal("valor"),
+                        rs.getDate("data").toLocalDate(),
+                        TipoTransacao.valueOf(rs.getString("tipo")),
+                        rs.getString("categoria"),
+                        usuario
+                );
+
+                lancamento.setIdLancamento(rs.getInt("id"));
+
+                lista.add(lancamento);
+            }
+
+            rs.close();
+            pstm.close();
+
+            return lista;
+
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao buscar por período", e);
+        }
     }
 }
