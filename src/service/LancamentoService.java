@@ -40,6 +40,32 @@ public class LancamentoService {
         return lancamentoDAO.buscarPorPeriodo(usuarioId, dataInicio, dataFim);
     }
 
+    public void resumoPeriodo(int usuarioId, LocalDate inicio, LocalDate fim){
+
+        List<Lancamento> lista = lancamentoDAO.buscarPorPeriodo(usuarioId, inicio, fim);
+
+        BigDecimal totalReceitas = BigDecimal.ZERO;
+        BigDecimal totalDespesas = BigDecimal.ZERO;
+
+        for(Lancamento l : lista){
+
+            if(l.getTipo() == TipoTransacao.RECEITA){
+                totalReceitas = totalReceitas.add(l.getValor());
+            }
+
+            if(l.getTipo() == TipoTransacao.DESPESA){
+                totalDespesas = totalDespesas.add(l.getValor());
+            }
+        }
+
+        BigDecimal saldo = totalReceitas.subtract(totalDespesas);
+
+        System.out.println("\n--- Resumo do período ---");
+        System.out.println("Total de Receitas: R$ " + totalReceitas);
+        System.out.println("Total de Despesas: R$ " + totalDespesas);
+        System.out.println("Saldo do período: R$ " + saldo);
+    }
+
     public void salvarLancamento (Lancamento lancamento) {
         this.lancamentoDAO.salvar(lancamento);
     }

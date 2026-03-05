@@ -73,6 +73,7 @@ private static void listarLancamentosPorPeriodo(Scanner teclado, LancamentoServi
                 );
         }
     }
+    lancamentoService.resumoPeriodo(idusuario, dataInicio, dataFim);
 }
 
 private static void cadastrarLancamento (Scanner teclado, LancamentoService lancamentoService){
