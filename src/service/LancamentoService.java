@@ -9,6 +9,9 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.time.Month;
+import java.time.format.TextStyle;
+import java.util.Locale;
 
 public class LancamentoService {
 
@@ -96,6 +99,41 @@ public class LancamentoService {
 
             System.out.println(categoria + " : R$ " + total);
         }
+    }
+
+    public void resumoMensal (int usuarioID, int mes, int ano){
+
+        LocalDate dataInicio = LocalDate.of(ano, mes, 1);
+        LocalDate dataFim = dataInicio.withDayOfMonth(dataInicio.lengthOfMonth());
+
+        List<Lancamento> lista = lancamentoDAO.buscarPorPeriodo(usuarioID, dataInicio, dataFim);
+
+        BigDecimal totalReceitas = BigDecimal.ZERO;
+        BigDecimal totalDespesas = BigDecimal.ZERO;
+        BigDecimal totalInvestimentos = BigDecimal.ZERO;
+
+        for(Lancamento lancamento : lista){
+            if(lancamento.getTipo() == TipoTransacao.RECEITA){
+                totalReceitas = totalReceitas.add(lancamento.getValor());
+
+            }else if(lancamento.getTipo() == TipoTransacao.DESPESA){
+                totalDespesas = totalDespesas.add(lancamento.getValor());
+
+            }else if(lancamento.getTipo() == TipoTransacao.INVESTIMENTO){
+                totalInvestimentos = totalInvestimentos.add(lancamento.getValor());
+            }
+        }
+
+        BigDecimal saldo = totalReceitas.subtract(totalDespesas);
+
+        Month mesNome = Month.of(mes);
+        String nomeMes = mesNome.getDisplayName(TextStyle.FULL, new Locale("pt", "BR"));
+
+        System.out.println("\n--- Resumo do Mês de " + nomeMes + " de " + ano + " ---");
+        System.out.println("Total de Receitas: R$ " + totalReceitas);
+        System.out.println("Total de Despesas: R$ " + totalDespesas);
+        System.out.println("Investimentos: R$ " + totalInvestimentos);
+        System.out.println("Saldo final do mês: R$ " + saldo);
     }
 
     public void salvarLancamento (Lancamento lancamento) {
