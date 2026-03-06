@@ -19,6 +19,7 @@ private static void mostrarMenu(){
     System.out.println("4. Ver saldo atual");
     System.out.println("5. Editar Lançamento");
     System.out.println("6. Buscar lançcamentos por data");
+    System.out.println("7. Ver resumo por categoria");
     System.out.println("9. Sair do Sistema");
     System.out.print("Escolha uma opção: ");
 }
@@ -74,6 +75,15 @@ private static void listarLancamentosPorPeriodo(Scanner teclado, LancamentoServi
         }
     }
     lancamentoService.resumoPeriodo(idusuario, dataInicio, dataFim);
+}
+
+private static void verResumoPorCategoria(Scanner teclado, LancamentoService lancamentoService){
+
+    System.out.print("Digite o ID do usuário: ");
+    int usuarioId = teclado.nextInt();
+    teclado.nextLine();
+
+    lancamentoService.resumoPorCategoria(usuarioId);
 }
 
 private static void cadastrarLancamento (Scanner teclado, LancamentoService lancamentoService){
@@ -200,6 +210,11 @@ public static void main(String[] args) throws Exception {
             case 6:
                 listarLancamentosPorPeriodo(teclado, lancamentoService);
                 break;
+
+            case 7:
+                verResumoPorCategoria(teclado, lancamentoService);
+                break;
+
             case 9:
                 System.out.println("\nSaindo... Até logo!");
                 break;

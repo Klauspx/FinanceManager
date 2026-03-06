@@ -6,7 +6,9 @@ import modelo.TipoTransacao;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class LancamentoService {
 
@@ -64,6 +66,36 @@ public class LancamentoService {
         System.out.println("Total de Receitas: R$ " + totalReceitas);
         System.out.println("Total de Despesas: R$ " + totalDespesas);
         System.out.println("Saldo do período: R$ " + saldo);
+    }
+
+    public void resumoPorCategoria (int usuarioID){
+
+        List<Lancamento> lancamentos = lancamentoDAO.buscarPorUsuario(usuarioID);
+
+        Map<String, BigDecimal> resumo = new HashMap<String,BigDecimal>();
+
+                for( Lancamento lancamento : lancamentos){
+                    String categoria = lancamento.getCategoria();
+                    BigDecimal valor = lancamento.getValor();
+
+                    if (!resumo.containsKey(categoria)){
+                        resumo.put(categoria, valor);
+
+                    }else {
+                        BigDecimal valorAtual = resumo.get(categoria);
+                        BigDecimal novoTotal = valorAtual.add(valor);
+
+                        resumo.put(categoria, novoTotal);
+                    }
+                }
+        System.out.println("\n--- Resumo por Categoria ---");
+
+        for (String categoria : resumo.keySet()) {
+
+            BigDecimal total = resumo.get(categoria);
+
+            System.out.println(categoria + " : R$ " + total);
+        }
     }
 
     public void salvarLancamento (Lancamento lancamento) {
