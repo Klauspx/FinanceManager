@@ -30,9 +30,9 @@ public class UsuarioDAO {
 
         pstm.close();
 
-        System.out.println("Usuário " + usuario.getNome() + " salvo com sucesso!");
+        System.out.println("Usuário " + usuario.getNome() + " cadastrado com sucesso!");
 
-    }catch (Exception erro){
+    }catch (SQLException erro){
         throw new RuntimeException("Erro ao salvar o usuário.", erro);
     }
     }
@@ -51,7 +51,7 @@ public class UsuarioDAO {
 
             System.out.println("Usuário deletado com sucesso!");
 
-        }catch (Exception erro){
+        }catch (SQLException erro){
             throw new RuntimeException("Erro ao deletar usuário.", erro);
         }
     }
@@ -71,7 +71,7 @@ public class UsuarioDAO {
             pstm.close();
 
             System.out.println("Atualizado com sucesso!");
-        }catch (Exception erro){
+        }catch (SQLException erro){
             throw new RuntimeException("Erro ao atualizar!");
         }
     }
@@ -99,7 +99,7 @@ public class UsuarioDAO {
                 rs.close();
                 pstm.close();
 
-            }catch (Exception erro){
+            }catch (SQLException erro){
                 throw new RuntimeException("Erro ao listar usuários!", erro);
         }
 
