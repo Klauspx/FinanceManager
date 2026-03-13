@@ -15,19 +15,26 @@ import java.util.Scanner;
 
 private static void mostrarMenu(){
     System.out.println("\n=== MEU GERENCIADOR FINANCEIRO ===");
+
+    System.out.println("\n--- USUÁRIOS ---");
     System.out.println("1 - Cadastrar usuário");
     System.out.println("2 - Deletar usuário");
     System.out.println("3 - Editar usuário");
     System.out.println("4 - Listar usuários");
-    System.out.println("5. Ver Extrato (Listar Lançamentos)");
-    System.out.println("6. Cadastrar Novo Lançamento");
-    System.out.println("7. Deletar Lançamento");
-    System.out.println("8. Ver saldo atual");
-    System.out.println("9. Editar Lançamento");
-    System.out.println("10. Buscar lançamentos por data");
-    System.out.println("11. Ver resumo por categoria");
-    System.out.println("12. Ver resumo do mês");
-    System.out.println("13. Sair do Sistema");
+
+    System.out.println("\n--- LANÇAMENTOS ---");
+    System.out.println("5 - Ver extrato");
+    System.out.println("6 - Cadastrar novo lançamento");
+    System.out.println("7 - Deletar lançamento");
+    System.out.println("8 - Ver saldo atual");
+    System.out.println("9 - Editar lançamento");
+
+    System.out.println("\n--- RELATÓRIOS ---");
+    System.out.println("10 - Buscar lançamentos por data");
+    System.out.println("11 - Ver resumo por categoria");
+    System.out.println("12 - Ver resumo do mês");
+
+    System.out.println("\n13 - Sair do sistema");
     System.out.print("Escolha uma opção: ");
 }
 private static void listarUsuarios(UsuarioService usuarioService){
