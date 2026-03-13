@@ -16,16 +16,18 @@ import java.util.Scanner;
 private static void mostrarMenu(){
     System.out.println("\n=== MEU GERENCIADOR FINANCEIRO ===");
     System.out.println("1 - Cadastrar usuário");
-    System.out.println("2 - Listar usuários");
-    System.out.println("3. Ver Extrato (Listar Lançamentos)");
-    System.out.println("4. Cadastrar Novo Lançamento");
-    System.out.println("5. Deletar Lançamento");
-    System.out.println("6. Ver saldo atual");
-    System.out.println("7. Editar Lançamento");
-    System.out.println("8. Buscar lançcamentos por data");
-    System.out.println("9. Ver resumo por categoria");
-    System.out.println("10. Ver resumo do mês");
-    System.out.println("11. Sair do Sistema");
+    System.out.println("2 - Deletar usuário");
+    System.out.println("3 - Editar usuário");
+    System.out.println("4 - Listar usuários");
+    System.out.println("5. Ver Extrato (Listar Lançamentos)");
+    System.out.println("6. Cadastrar Novo Lançamento");
+    System.out.println("7. Deletar Lançamento");
+    System.out.println("8. Ver saldo atual");
+    System.out.println("9. Editar Lançamento");
+    System.out.println("10. Buscar lançamentos por data");
+    System.out.println("11. Ver resumo por categoria");
+    System.out.println("12. Ver resumo do mês");
+    System.out.println("13. Sair do Sistema");
     System.out.print("Escolha uma opção: ");
 }
 private static void listarUsuarios(UsuarioService usuarioService){
@@ -47,6 +49,45 @@ private static void salvarUsuario(Scanner teclado, UsuarioService usuarioService
     Usuario novousuario = new Usuario(nome, email, senha);
 
     usuarioService.salvarUsuario(novousuario);
+}
+
+private static void deletarUsuario(Scanner teclado, UsuarioService usuarioService){
+    System.out.println("\n Digite o id do usuário que será deletado: ");
+    int id = teclado.nextInt();
+
+    usuarioService.excluirUsuario(id);
+}
+
+private static void editarUsuario(Scanner teclado, UsuarioService usuarioService){
+
+    try {
+
+        System.out.println("\n--- Editar Usuário ---");
+
+        System.out.print("ID do usuário que será editado: ");
+        int id = teclado.nextInt();
+        teclado.nextLine();
+
+        System.out.print("Novo nome de usuário: ");
+        String nome = teclado.nextLine();
+
+        System.out.print("Novo email: ");
+        String email = teclado.nextLine();
+
+        System.out.print("Nova senha: ");
+        String senha = teclado.nextLine();
+
+        Usuario atualizado = new Usuario(nome, email, senha);
+
+        usuarioService.atualizarUsuario(atualizado);
+
+        System.out.println("\nUsuário atualizado com sucesso!");
+
+    } catch (IllegalArgumentException erro) {
+        System.out.println("\nErro: " + erro.getMessage());
+    } catch (Exception e) {
+        System.out.println("\nErro inesperado. Verifique os dados digitados.");
+    }
 }
 
 private static void listarLancamentosPorUsuario(Scanner teclado, LancamentoService lancamentoService){
@@ -231,48 +272,55 @@ public static void main(String[] args) throws Exception {
             case 1:
                 salvarUsuario(teclado,  usuarioService);
                 break;
-
             case 2:
-                listarUsuarios(usuarioService);
+                deletarUsuario(teclado, usuarioService);
                 break;
 
             case 3:
-                listarLancamentosPorUsuario(teclado, lancamentoService);
+                editarUsuario(teclado, usuarioService);
                 break;
 
             case 4:
-                cadastrarLancamento(teclado, lancamentoService);
+                listarUsuarios(usuarioService);
                 break;
 
             case 5:
-                deletarLancamento(teclado, lancamentoService);
+                listarLancamentosPorUsuario(teclado, lancamentoService);
                 break;
 
             case 6:
-                verSaldo(teclado, lancamentoService);
+                cadastrarLancamento(teclado, lancamentoService);
                 break;
 
             case 7:
-                editarLancamento(teclado, lancamentoService);
+                deletarLancamento(teclado, lancamentoService);
                 break;
 
             case 8:
-                listarLancamentosPorPeriodo(teclado, lancamentoService);
+                verSaldo(teclado, lancamentoService);
                 break;
 
             case 9:
-                verResumoPorCategoria(teclado, lancamentoService);
+                editarLancamento(teclado, lancamentoService);
                 break;
 
             case 10:
+                listarLancamentosPorPeriodo(teclado, lancamentoService);
+                break;
+
+            case 11:
+                verResumoPorCategoria(teclado, lancamentoService);
+                break;
+
+            case 12:
                 verResumoPorMes(teclado, lancamentoService);
                 break;
-            case 11:
+            case 13:
                 System.out.println("\nSaindo... Até logo!");
                 break;
 
             default:
-                System.out.println("\nOpção inválida! Digite um número de 1 a 11.");
+                System.out.println("\nOpção inválida! Digite um número de 1 a 13.");
         }
     }
     teclado.close();
